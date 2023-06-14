@@ -34,9 +34,9 @@ func RouteInit(app *fiber.App) {
 	customer.Get("/bill", func(c *fiber.Ctx) {
 		controller.GetCustomerBill(c)
 	})
-	customer.Get("/:id", func(c *fiber.Ctx) {
-		controller.GetCustomerById(c)
-	})
+	// customer.Get("/:id", func(c *fiber.Ctx) {
+	// 	controller.GetCustomerById(c)
+	// })
 	customer.Post("/logout", func(c *fiber.Ctx) {
 		controller.Logout(c)
 	})

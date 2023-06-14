@@ -48,6 +48,7 @@ func CreateOrder(c *fiber.Ctx) error {
 	database.DB.Create(&order)
 
 	orderInput.CustomerID = order.CustomerID
+	orderInput.StaffID = order.StaffID
 	orderInput.Item = order.Item
 	orderInput.Quantity = order.Quantity
 	orderInput.TotalPrice = order.TotalPrice
