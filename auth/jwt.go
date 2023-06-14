@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/vanessadanu/Finpro-Golang.git/database"
 )
 
 type BlacklistedToken struct {
@@ -54,30 +53,26 @@ func ExtractToken(authorizationHeader string) string {
 	return token
 }
 
-func AddToBlacklist(tokenString string) error {
-	token, _, err := new(jwt.Parser).ParseUnverified(tokenString, jwt.MapClaims{})
-	if err != nil {
-		return err
-	}
+// func GenerateExpiredToken(tokenString string) (string, error) {
+// 	// Parse the existing token to extract the claims
+// 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+// 		return jwtSecret, nil
+// 	})
+// 	if err != nil {
+// 		return "", fmt.Errorf("failed to parse token: %v", err)
+// 	}
 
-	expirationTime := time.Unix(int64(token.Claims.(jwt.MapClaims)["exp"].(float64)), 0)
+// 	// Create a new token with a short expiration time (e.g., 1 second)
+// 	expiredClaims := jwt.MapClaims{
+// 		"exp": time.Now().Add(time.Second).Unix(),
+// 	}
 
-	blacklistedToken := BlacklistedToken{
-		Token:     tokenString,
-		ExpiresAt: expirationTime,
-	}
+// 	// Sign the new token with the secret key
+// 	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, expiredClaims)
+// 	signedToken, err := newToken.SignedString(jwtSecret)
+// 	if err != nil {
+// 		return "", fmt.Errorf("failed to generate expired token: %v", err)
+// 	}
 
-	err = database.DB.Create(&blacklistedToken).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func IsTokenBlacklisted(tokenString string) bool {
-	var count int64
-	database.DB.Model(&BlacklistedToken{}).Where("token = ?", tokenString).Count(&count)
-
-	return count > 0
-}
+// 	return signedToken, nil
+// }

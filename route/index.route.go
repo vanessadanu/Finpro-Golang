@@ -20,10 +20,6 @@ func authMiddleware() func(c *fiber.Ctx) {
 }
 
 func RouteInit(app *fiber.App) {
-	// app.Post("/api/logout", func(c *fiber.Ctx) {
-	// 	controller.Logout(c)
-	// })
-
 	customer := app.Group("api/customer")
 	customer.Post("/login", func(c *fiber.Ctx) {
 		controller.CustomerLogin(c)
@@ -40,6 +36,9 @@ func RouteInit(app *fiber.App) {
 	})
 	customer.Get("/:id", func(c *fiber.Ctx) {
 		controller.GetCustomerById(c)
+	})
+	customer.Post("/logout", func(c *fiber.Ctx) {
+		controller.Logout(c)
 	})
 
 	staff := app.Group("api/admin")
@@ -131,5 +130,10 @@ func RouteInit(app *fiber.App) {
 	})
 	staff.Delete("/pickup/:id", func(c *fiber.Ctx) {
 		controller.DeletePickup(c)
+	})
+
+	// Logout
+	staff.Post("/logout", func(c *fiber.Ctx) {
+		controller.Logout(c)
 	})
 }
