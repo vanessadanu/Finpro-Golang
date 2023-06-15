@@ -38,7 +38,7 @@ func GetCustomerOrders(c *fiber.Ctx) error {
 
 	var order models.Order
 
-	if err := database.DB.Preload("Customer").First(&order, id).Error; err != nil {
+	if err := database.DB.Preload("Customer").Preload("Staff").First(&order, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"message": "No orders found for the customer",
@@ -61,7 +61,7 @@ func GetCustomerBill(c *fiber.Ctx) error {
 
 	var bill models.Bill
 
-	err := database.DB.Preload("Order.Customer").First(&bill, id).Error
+	err := database.DB.Preload("Order.Customer").Preload("Order.Staff").First(&bill, id).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{

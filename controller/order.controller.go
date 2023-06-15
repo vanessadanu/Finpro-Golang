@@ -9,7 +9,7 @@ import (
 func GetOrderAll(c *fiber.Ctx) error {
 	var orders []models.Order
 
-	database.DB.Preload("Customer").Find(&orders)
+	database.DB.Preload("Customer").Preload("Order.Staff").Find(&orders)
 
 	return c.JSON(fiber.Map{
 		"status":  "success",
@@ -23,7 +23,7 @@ func GetOrderById(c *fiber.Ctx) error {
 
 	var order models.Order
 
-	database.DB.Preload("Customer").Find(&order, id)
+	database.DB.Preload("Customer").Preload("Order.Staff").Find(&order, id)
 
 	return c.JSON(fiber.Map{
 		"status":  "success",

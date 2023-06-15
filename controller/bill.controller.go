@@ -9,7 +9,7 @@ import (
 func GetBillAll(c *fiber.Ctx) error {
 	var bills []models.Bill
 
-	database.DB.Preload("Order").Preload("Order.Customer").Find(&bills)
+	database.DB.Preload("Order").Preload("Order.Customer").Preload("Order.Staff").Find(&bills)
 
 	return c.JSON(fiber.Map{
 		"status":  "success",
@@ -23,7 +23,7 @@ func GetBillById(c *fiber.Ctx) error {
 
 	var bill models.Bill
 
-	database.DB.Preload("Order").Preload("Order.Customer").Find(&bill, id)
+	database.DB.Preload("Order").Preload("Order.Customer").Preload("Order.Staff").Find(&bill, id)
 
 	return c.JSON(fiber.Map{
 		"status":  "success",

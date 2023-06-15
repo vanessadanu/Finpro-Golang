@@ -9,7 +9,7 @@ import (
 func GetPickupAll(c *fiber.Ctx) {
 	var pickups []models.Pickup
 
-	database.DB.Preload("Order").Preload("Order.Customer").Find(&pickups)
+	database.DB.Preload("Order").Preload("Order.Customer").Preload("Order.Staff").Find(&pickups)
 
 	c.JSON(fiber.Map{
 		"status":  "success",
@@ -24,7 +24,7 @@ func GetPickupById(c *fiber.Ctx) {
 
 	var pickup models.Pickup
 
-	database.DB.Preload("Order").Preload("Order.Customer").Find(&pickup, id)
+	database.DB.Preload("Order").Preload("Order.Customer").Preload("Order.Staff").Find(&pickup, id)
 
 	c.JSON(fiber.Map{
 		"status":  "success",
